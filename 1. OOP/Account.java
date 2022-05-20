@@ -5,6 +5,7 @@ public class Account {
     private int deposit;
     private int loanReq;
     private int loanPending;
+    private double interestRate;
 
     public Account(String name, String type, int deposit){
         this.name = name;
@@ -12,6 +13,7 @@ public class Account {
         this.deposit = deposit;
         this.loanReq = 0;
         this.loanPending = 0;
+        this.interestRate = 0;
     }
 
     public Bank getBank() {
@@ -38,6 +40,14 @@ public class Account {
         this.loanReq = loanReq;
     }
 
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
     public void depositAmount(int deposit){}
 
     public String getName(){ return this.name; }
@@ -53,13 +63,16 @@ public class Account {
     public void requestLoan(int loanReq) {}
 
     public void queryDeposit(){
-        System.out.println("Current balance: " + this.deposit + "$, Loan: " + getLoanReq() + "$");
+        System.out.printf("Current balance: " + (this.deposit+this.loanReq) + "$");
+        if(this.loanReq > 0) System.out.printf(", Loan: " + this.loanReq + "$");
+        System.out.println();
     }
 }
 
 class Savings extends Account{
     public Savings(String name, String type, int deposit) {
         super(name, type, deposit);
+        System.out.println("Savings account for " + name + " created; initial balance " + deposit + "$");
     }
 
     @Override
@@ -123,6 +136,7 @@ class Student extends Account{
 class Loan extends Account{
     public Loan(String name, String type, int deposit) {
         super(name, type, deposit);
+        System.out.println("Loan account for " + name + " created; initial loan " + deposit + "$");
     }
 
     @Override
@@ -150,6 +164,7 @@ class Loan extends Account{
 class FixedDeposit extends Account{
     public FixedDeposit(String name, String type, int deposit) {
         super(name, type, deposit);
+        System.out.println("Fixed Deposit account for " + name + " created; initial balance " + deposit + "$");
     }
 
     @Override
