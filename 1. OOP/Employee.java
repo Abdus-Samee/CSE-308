@@ -2,13 +2,19 @@ import java.util.List;
 
 public class Employee {
     private Bank bank = null;
+    private String name;
 
-    public Employee(){
-
+    public Employee(Bank bank, String name){
+        this.bank = bank;
+        this.name = name;
     }
 
     public Bank getBank() {
         return this.bank;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setBank(Bank bank){
@@ -29,7 +35,7 @@ public class Employee {
         else System.out.println(foundAccount.getName() + "'s current balance " + foundAccount.getDeposit() + "$");
     }
 
-    public void changeInterestRate() {
+    public void changeInterestRate(String type, double interestRate) {
         System.out.println("You don't have permission for this operation");
     }
 
@@ -38,21 +44,11 @@ public class Employee {
     }
 
     public void approveLoan(){
-        System.out.println("You don't have permission for this operation");
-    }
-}
-
-class MD extends Employee{
-    public MD(){
-        super();
-    }
-
-    @Override
-    public void approveLoan(){
         String name = "";
         for(Account account : getBank().getAccounts()){
             if(account.getLoanPending() > 0){
                 account.setLoanReq(account.getLoanReq()+account.getLoanPending());
+                account.setInterestRate(10);
                 account.setLoanPending(0);
                 name += account.getName()+", ";
             }
@@ -61,10 +57,20 @@ class MD extends Employee{
         if(!name.isEmpty()) System.out.println("Loan for " + name + " approved");
         else System.out.println("No loan to approve");
     }
+}
+
+class MD extends Employee{
+    public MD(Bank bank, String name){
+        super(bank, name);
+    }
 
     @Override
-    public void changeInterestRate(){
+    public void changeInterestRate(String type, double interestRate){
+        for(Account account : getBank().getAccounts()){
+            if(account.getType().equals(type)) account.setInterestRate(interestRate);
+        }
 
+        System.out.println("Interest Rate of " + type + " account changed to " + interestRate);
     }
 
     @Override
@@ -74,16 +80,16 @@ class MD extends Employee{
 }
 
 class Officer extends Employee{
-    public Officer(){
-        super();
-    }
-
-    @Override
-    public void approveLoan(){
-
+    public Officer(Bank bank, String name){
+        super(bank, name);
     }
 }
 
 class Cashier extends Employee{
+    public Cashier(Bank bank, String name) { super(bank, name); }
 
+    @Override
+    public void approveLoan(){
+        System.out.println("You don't have permission for this operation");
+    }
 }
