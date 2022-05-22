@@ -47,7 +47,11 @@ public class Employee {
         String name = "";
         for(Account account : getBank().getAccounts()){
             if(account.getLoanPending() > 0){
-                account.setLoanReq(account.getLoanReq()+account.getLoanPending());
+                if(account instanceof Loan){
+                    account.setDeposit(account.getDeposit()+account.getLoanPending());
+                }else{
+                    account.setLoanReq(account.getLoanReq()+account.getLoanPending());
+                }
                 account.setInterestRate(10);
                 account.setLoanPending(0);
                 name += account.getName()+", ";
