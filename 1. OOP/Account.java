@@ -78,6 +78,7 @@ class Savings extends Account{
     @Override
     public void depositAmount(int deposit) {
         setDeposit(getDeposit()+deposit);
+        getBank().setFund(getBank().getFund()+deposit);
         System.out.println(deposit + "$ deposited; Current balance: " + getDeposit() + "$");
     }
 
@@ -85,6 +86,7 @@ class Savings extends Account{
     public void withdraw(int withdraw) {
         if(getDeposit()-withdraw >= 1000) {
             setDeposit(getDeposit() - withdraw);
+            getBank().setFund(getBank().getFund()-withdraw);
             System.out.println("Valid transaction; Current balance: " + getDeposit() + "$");
         }
         else
@@ -110,6 +112,7 @@ class Student extends Account{
     @Override
     public void depositAmount(int deposit) {
         setDeposit(getDeposit()+deposit);
+        getBank().setFund(getBank().getFund()+deposit);
         System.out.println(deposit + "$ deposited; Current balance: " + getDeposit() + "$");
     }
 
@@ -117,6 +120,7 @@ class Student extends Account{
     public void withdraw(int withdraw) {
         if(withdraw <= 10000 && withdraw <= getDeposit()) {
             setDeposit(getDeposit() - withdraw);
+            getBank().setFund(getBank().getFund()-withdraw);
             System.out.println("Valid transaction; Current balance: " + getDeposit() + "$");
         }
         else
@@ -141,7 +145,8 @@ class Loan extends Account{
 
     @Override
     public void depositAmount(int deposit) {
-        setDeposit(getDeposit()+deposit);
+        setDeposit(getDeposit()-deposit);
+        getBank().setFund(getBank().getFund()+deposit);
         System.out.println(deposit + "$ deposited; Current balance: " + getDeposit() + "$");
     }
 
@@ -154,8 +159,8 @@ class Loan extends Account{
     public void requestLoan(int loanReq) {
         int maxLoan = (getDeposit()*5)/100;
 
-        if(loanReq <= maxLoan) {
-            setDeposit(loanReq);
+        if(loanReq+getLoanReq()+getLoanPending() <= maxLoan) {
+            setLoanPending(getLoanPending()+loanReq);
             System.out.println("Loan request successful, sent for approval");
         }else System.out.println("Loan request unsuccessful");
     }
@@ -171,14 +176,16 @@ class FixedDeposit extends Account{
     public void depositAmount(int deposit) {
         if(deposit >= 50000){
             setDeposit(getDeposit()+deposit);
+            getBank().setFund(getBank().getFund()+deposit);
             System.out.println(deposit + "$ deposited; Current balance: " + getDeposit() + "$");
-        }
+        }else System.out.println("Not enough deposit for Fixed Deposit");
     }
 
     @Override
     public void withdraw(int withdraw) {
         if(getBank().getClock() >= 1){
             setDeposit(getDeposit() - withdraw);
+            getBank().setFund(getBank().getFund()-withdraw);
             System.out.println("Valid transaction; Current balance: " + getDeposit() + "$");
         }
         else
