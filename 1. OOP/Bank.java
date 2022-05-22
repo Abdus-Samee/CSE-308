@@ -40,6 +40,9 @@ public class Bank {
     public void addAccount(Account account) {
         this.accounts.add(account);
         account.setBank(this);
+
+        if(account instanceof Loan) setFund(getFund()-account.getDeposit());
+        else setFund(getFund()+account.getDeposit());
     }
 
     public int getFund() {
@@ -100,7 +103,7 @@ public class Bank {
             if(account.getLoanReq() > 0) {
                 account.setDeposit(account.getDeposit()+((account.getDeposit()+account.getLoanReq())*5)/100);
                 account.setDeposit(account.getDeposit() - (int) (account.getLoanReq() * account.getInterestRate()) / 100);
-                //account.setDeposit(account.getDeposit()-500);
+                account.setDeposit(account.getDeposit()-500);
             }
         }
     }
