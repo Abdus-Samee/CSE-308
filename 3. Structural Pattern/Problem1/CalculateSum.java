@@ -1,10 +1,11 @@
 package Problem1;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 public class CalculateSum {
-    public static void getSumWSDelim(String file){
+    public static void getSumWSDelim(File file){
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String in = reader.readLine();
@@ -18,7 +19,7 @@ public class CalculateSum {
             e.printStackTrace();
         }
     }
-    
+
     public static void getSum(String file, String delim){
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
